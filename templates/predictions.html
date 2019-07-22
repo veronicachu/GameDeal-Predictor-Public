@@ -1,0 +1,98 @@
+<style>
+
+ .main {
+ background-color: rgba(255, 255, 255, 0.5);
+ margin-top: 100px;
+ padding-bottom: 50px;
+ }
+ .main h1 {
+ font-size: 3.5em;
+ font-family: Arial;
+ color: #2E3759;
+ }
+ .main h2 {
+ font-size: 2em;
+ font-family: Arial;
+ font-weight: bold;
+ color: #2E3759;
+ }
+ .main h3 {
+ font-size: 1.5em;
+ font-family: Arial;
+ color: #2E3759;
+ }
+ .main p {
+ font-size:1em;
+ font-family: Arial;
+ color: #2E3759;
+ }
+
+</style>
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>GameDeal Predictor | Predictions</title>
+</head>
+
+<body>
+    <div class="main">
+        <div style="text-align: center">
+            <div class="starter-template">
+                <h1>Results for <i>{{targetGame}}</i></h1>
+                <img src="static/img/{{targetGame}}.jpg" style="width: 15%">
+
+                <br>
+                <br>
+                <br>
+                <h2>Given your wait time ({{targetWait}} months), the price will probably get to </h2>
+                <h2>{{predictedPrice}}</h2>
+                <h3>Current Historical Low: ${{historicalLow}}</h3>
+
+                <!-- 
+                <br>
+                <br>
+                <br>
+                <h2>Given your target price, you will probably have to wait </h2>
+                <h2>{{predictedWaitDays}}</h2>
+                -->
+
+				<br>
+                <br>
+                <br>
+                <h2>The probability there will be a deal tomorrow is</h2>
+                <h2>{{probDealTomorrow}}</h2>
+
+                <br>
+                <br>
+                <br>
+                <h2>The next sale predicted for this game is in</h2>
+                <h2>{{nextHighProbDay}}</h2>
+                <h2>at {{predictedPrice_prob}}</h2>
+
+                <br>
+                <br>
+                <br>
+                <form action='/reminder', method='POST'>
+                    <input name="game_title" type="hidden" value=targetGame>
+
+					<a href="https://calendar.google.com/calendar/r/eventedit?text=Look+Out+for+Game+Deal&dates={{calStart_target}}/{{calEnd_target}}&details={{game_url}}" class="btn btn-success" target="_blank" rel="noopener noreferrer">
+						Add Your Wait Time to gCal
+					</a>
+					&emsp;
+                    &emsp;
+                    &emsp;
+                    &emsp;
+					<a href="https://calendar.google.com/calendar/r/eventedit?text=Look+Out+for+Game+Deal&dates={{calStart_nextdeal}}/{{calEnd_nextdeal}}&details={{game_url}}" class="btn btn-info" target="_blank" rel="noopener noreferrer">
+						Add Next Predicted Sale to gCal
+					</a>
+                </form>
+                <br>
+                <br>
+                <br>
+                <h3>No More Being Patient</h3>
+                <a href={{game_url}} class="btn btn-outline-danger">Buy Game Now</a>
+                <p>{{game_price}}</p>
+            </div>
+        </div>
+    </div>
+</body>

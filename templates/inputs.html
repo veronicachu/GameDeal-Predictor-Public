@@ -1,0 +1,131 @@
+<style>
+
+ .main {
+ background-color: rgba(255, 255, 255, 0.5);
+ margin-top: 100px;
+ padding-bottom: 50px;
+ }
+ .main h1 {
+ font-size: 3.5em;
+ font-family: Arial;
+ color: #2E3759;
+ }
+ .main h2 {
+ font-size: 2em;
+ font-family: Arial;
+ color: #2E3759;
+ }
+ .main h3 {
+ font-size: 2em;
+ font-family: Arial;
+ color: #2E3759;
+ }
+ .main p {
+ font-size:1em;
+ font-family: Arial;
+ color: #2E3759;
+ }
+
+ div#loading {
+    /* width: 35px; */
+    /* height: 35px; */
+    display: none;
+    /* background: url(/static/loadingimage.gif) no-repeat; */
+    cursor: wait;
+    }
+</style>
+
+
+
+<title>GameDeal Predictor | Inputs</title>
+
+<!-- Autocomplete code for game title input   -->
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+<script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="//code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+
+<script type="text/javascript">
+$(function() {
+    $("#autocomplete").autocomplete({
+        source:function(request, response) {
+            $.getJSON("{{url_for('autocomplete')}}",{
+                q: request.term, // in flask, "q" will be the argument to look for using request.args
+            }, function(data) {
+                response(data.matching_results); // matching_results from jsonify
+            });
+        },
+        minLength: 2,
+        select: function(event, ui) {
+            console.log(ui.item.value); // not in your question, but might help later
+        }
+    });
+})
+</script>
+
+<script type="text/javascript">// <![CDATA[
+        function loading(){
+            $("#loading").show();
+            $("#content").hide();       
+        }
+// ]]>
+</script>
+</head>
+
+
+
+<body>
+<div class="main">
+	<div style="text-align:center">
+		
+		<div id="loading" style="text-align:center">
+			<h3>Loading results...</h3>
+		</div>
+
+		<!-- This sends user to predictions page after filling out the survey -->
+		<div id="content">
+            <br><br><br>
+
+			<div class="starter-template">
+			<h1>GameDeal Predictor</h1>
+			<br>
+			<h2>Find the next deal on a Steam game you're interested in buying!</h2>
+			</div>
+		    <br>
+
+			<img src="static/img/steam_logo.png" style="width: 15%">
+			<div class="starter-template"></div>
+			<br><br>
+
+			<form action='/predictions', method='POST'>
+
+			<!-- Inputs -->
+				<div><h3>What game are you interested in buying?</h3></div>
+				<p>
+				<!-- <input class="input" type="string" name="game_title"> -->
+				<!-- <input name="game_title" type="string" id="autocomplete" class="form-control input-lg"/> -->
+				<input name="game_title" type="string" id="autocomplete" class="input-control input-lg"/>
+				</p>
+				<br><br>
+                
+                <!--
+				<div><h3>What is your target price?</h3></div>
+				<p><input name="target_price" class="input" type="number" min="1"></p>
+				<p>(Minimum $1)</p>
+				<br><br>
+                -->
+
+				<div><h3>How many months are you willing to wait?</h3></div>
+				<p><input name="target_day" class="input" type="number" min="1"></p>
+				<p>(Minimum 1 month)</p>
+				<br><br><br>
+
+				<button type="submit" class="btn btn-dark" value="Submit" onclick="loading();">Find my next deal!</button>
+			</form>
+		</div>
+
+		
+	</div>
+</div> 
+</body>
