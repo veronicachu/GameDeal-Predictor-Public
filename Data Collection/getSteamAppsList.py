@@ -6,13 +6,13 @@ Output: in folder "dataobjects"
     -pickle file "steamapplist_appName = dictionary {appName:appID}
 
 ----
-Last updated: 2019-06-06
+Last updated: 2019-07-24
 Last run: 2019-06-06 12:35PM PST
 """
 #%%
 import requests
 import json
-import generalFunctions
+import utils
 
 #%%
 #------------------------------------------------------------------------------
@@ -31,62 +31,76 @@ jsondata = json.loads(apidata.text)
 # move down json hierarchy
 #------------------------------------------------------------------------------
 applist = dict()
-for key, value in dict.items(jsondata["applist"]):
-    applist = {key:value}
+for title, apps in dict.items(jsondata["applist"]):
+    applist = {title:apps}
 
 #------------------------------------------------------------------------------
-# transform games list into a string for parsing
-#------------------------------------------------------------------------------
-appsString = json.dumps(applist["apps"])
-# appsString[1:100]
-
-#------------------------------------------------------------------------------
-# split game data into a list of strings
-#------------------------------------------------------------------------------
-appid = appsString[2:].split("}, {")
-
-#for i in range(10):
-#    print(appid[i])
-#print("total games", len(appid))
-
-#------------------------------------------------------------------------------
-# parse out appid# and appname
+# loop through list of apps
 # place into a dictionary {appid:appname}
 #------------------------------------------------------------------------------
-keystart = '"appid": '
-keyend = ','
-
 appIDDict = dict()
-for line in appid:
-  key = (line.split(keystart))[1].split(keyend)[0]
-  value = (line.split('"'))[5] # will break if the number of quotations or order change
-  appIDDict[int(key)] = value
-
-#appIDDict[992050] # should be 'Oik 5'
+for ind in range(len(apps)):
+    key = apps[ind]['appid']
+    value = apps[ind]['name']
+    appIDDict[key] = value
 
 #------------------------------------------------------------------------------
-# parse out appid# and appname
+# loop through list of apps
 # place into a dictionary {appname:appid}
 #------------------------------------------------------------------------------
-keystart = '"appid": '
-keyend = ','
-
 appNameDict = dict()
-for line in appid:
-  key = (line.split(keystart))[1].split(keyend)[0]
-  value = (line.split('"'))[5] # will break if the number of quotations or order change
-  appNameDict[value] = key
+for ind in range(len(apps)):
+    key = apps[ind]['name']
+    value = apps[ind]['appid']
+    appNameDict[key] = value
 
 #appNameDict['Oik 5'] # should be 992050
 
 #%%
+# if there is already a saved file, make another file that lists the new entries 
+# and overwrite old file
+# if there is not already a saved file, save dict
+
 #------------------------------------------------------------------------------
 # pickle {appid:appname} dictionary
 #------------------------------------------------------------------------------
-generalFunctions.save_pickleObject(appIDDict,'steamapplist_appID')
+try:
+    # load old dictionary
+    oldappID = utils.load_pickleObject('steamapplist_appID')
+    
+    # create list of the new items
+    oldkeys = list(oldappID.keys())
+    newkeys = list(appIDDict.keys())
+    newList = list(set(newkeys) - set(oldkeys))
+    
+    # save new items list
+    utils.save_pickleObject(newList,'steamapplist_newIDs')
+    
+    # save new dictionary
+    utils.save_pickleObject(appIDDict,'steamapplist_appID')
+    
+except:
+    utils.save_pickleObject(appIDDict,'steamapplist_appID')
 
 #------------------------------------------------------------------------------
 # pickle {appname:appid} dictionary
 #------------------------------------------------------------------------------
-generalFunctions.save_pickleObject(appNameDict,'steamapplist_appName')
+try:
+    # load old dictionary
+    oldappName = utils.load_pickleObject('steamapplist_appName')
+    
+    # create list of the new items
+    oldNames = list(oldappName.keys())
+    newNames = list(appNameDict.keys())
+    newList = list(set(newNames) - set(oldNames))
+    
+    # save new items list
+    utils.save_pickleObject(newList,'steamapplist_newNames')
+    
+    # save new dictionary
+    utils.save_pickleObject(appNameDict,'steamapplist_appID')
+    
+except:
+    utils.save_pickleObject(appNameDict,'steamapplist_appID')
+
 

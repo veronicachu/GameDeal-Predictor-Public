@@ -1,16 +1,22 @@
 # -*- coding: utf-8 -*-
 """
-Builds a dataset of paid game details from Steam
+Format data from json file read from Steam's app details page into a DataFrame
+with target details
 
 Input: 
-    gameName as (list of strings) - must have exact names as on it's Steam page
+    appIDDict = Steam app ID to Name dictionary
+    appID = target's Steam app ID number
+    json_appdata = json data
+    gameDetailsDF = empty dataframe or existing dataframe game's info is being being added to
 
 Output: 
     dataframe (game title | app ID | developer | publisher | release date | genres | total reviews | ...
                initial price | final price | metacritic score | metacritic url)
     
 ----
-Last updated: 2019-06-12
+Created: 2019-06-12
+Last updated: 2019-07-22
+- Updated description
 """
 
 def buildSteamGameDetailsData(appIDDict, appID, json_appdata, gameDetailsDF):

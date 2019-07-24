@@ -8,7 +8,7 @@ Last updated: 2019-06-11
 Last run: 2019-06-11
 """
 
-import generalFunctions
+import utils
 import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
@@ -19,7 +19,7 @@ import pandas as pd
 # load unfiltered pickled dictionary {appID:appName}
 #------------------------------------------------------------------------------
 try:
-    paidIDList = generalFunctions.load_pickleObject('paidSteamIDsList')
+    paidIDList = utils.load_pickleObject('paidSteamIDsList')
 except:
     print ("Need paidSteamIDsList.pkl file in dataobjects folder. Run collectSteamPaidGamesDetails.py")
 

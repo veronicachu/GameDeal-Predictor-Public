@@ -12,7 +12,7 @@ Output:
 Last updated: 2019-06-10
 """
 #%%
-import generalFunctions
+import utils
 import requests
 from bs4 import BeautifulSoup, SoupStrainer
 from datetime import datetime
@@ -24,7 +24,7 @@ def getNewsUpdates(appName):
 # load pickled dictionary {appName:appID}
 #------------------------------------------------------------------------------
     try:
-        appNameDict = generalFunctions.load_pickleObject('steamapplist_appName')
+        appNameDict = utils.load_pickleObject('steamapplist_appName')
     except:
         print ("Need steamapplist_appName.pkl file in dataobjects folder. Run getSteamAppsList.py")
 
