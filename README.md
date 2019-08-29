@@ -3,6 +3,8 @@
 
 ### Author: [Veronica Chu](https://www.linkedin.com/in/chuveronica/)
 
+[Initial Build](gamedeal-predictor.xyz)
+
 ----
 
 ### Overview:
